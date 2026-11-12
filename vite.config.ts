@@ -16,6 +16,21 @@ export default defineConfig(() => {
         '@': path.resolve(__dirname, './src'),
       },
     },
+    build: {
+      chunkSizeWarningLimit: 1600,
+      rollupOptions: {
+        output: {
+          manualChunks(id: string) {
+            if (id.includes('node_modules/three')) {
+              return 'three-vendor';
+            }
+            if (id.includes('node_modules/@supabase')) {
+              return 'supabase-vendor';
+            }
+          },
+        },
+      },
+    },
     server: {
       port: 3000,
       host: true,
